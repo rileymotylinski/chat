@@ -5,6 +5,7 @@ window.addEventListener("DOMContentLoaded", () => {
             message = $("#message").val();
             user = $("#username").val();
             console.log(message)
+            // formatting outgoing message
             fetch("http://127.0.0.1:4999/chatroom/message", {
                 method: "POST",
                 body: JSON.stringify({
@@ -24,6 +25,8 @@ window.addEventListener("DOMContentLoaded", () => {
         
     );
 
+    // whenever a messages is published to the redis channel, a stream api endpoint in flask is updated.
+    // The EventSource object handles that.
     const sse = new EventSource("/stream/" + chatroom)
 
     function handleStream(data){
@@ -35,11 +38,13 @@ window.addEventListener("DOMContentLoaded", () => {
         console.log(data)
         
         
-        // single quotes don't work right now :(. Something with escape characters on server side maybe?
+        // TODO: single quotes don't work right now :(. Something with escape characters on server side maybe?
+        // inserting into current page
         paragraph.innerText = data["user"] + ": " + data["message"];
         div.appendChild(paragraph);
     }
 
+    // behavior on received message
     sse.onmessage = e => {handleStream(e.data)}
 
 

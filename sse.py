@@ -15,11 +15,12 @@ logging.getLogger('werkzeug').setLevel(logging.ERROR)
 # r.pubsub_channels()?
 rooms = []
 
+# home route with landing page
 @app.route("/")
 def home():
     return render_template("index.html", rooms=rooms)
 
-
+# specific chatroom 
 @app.route("/chatroom/<chatroom_name>")
 def chatroom(chatroom_name):
     if chatroom_name not in rooms:
@@ -27,7 +28,7 @@ def chatroom(chatroom_name):
     return render_template("chatroom.html", room=chatroom_name)
 
 
-
+# accepting client messages
 @app.route("/chatroom/message", methods=["POST"])
 def message():
     if request.method == "POST":
@@ -38,10 +39,8 @@ def message():
         
     return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
 
- # message["data"].decode('utf8').replace("'", '"')
-                    # message = message["data"].decode("utf-8").replace("'", '"').encode("utf-8")
 
-
+# stream of information 
 @app.route("/stream/<chatroom_name>")
 def stream(chatroom_name):
     p = r.pubsub()
@@ -59,10 +58,10 @@ def stream(chatroom_name):
                     
                     h.log_message("Relaying Message...")
                     try:
-                        # throws error
-                        # can remove this line as it works fine w/o, but included to illustrate point
+                        
                       
                         yield f"data: {message["data"].decode("utf-8")} \n\n"
+                    # catch error messages related to encoding/decoding from redis
                     except TypeError as t:
                         h.log_message("Error sending message: " + str(t))
                         decoded_message = message["data"].decode("utf-8")
