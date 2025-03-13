@@ -58,9 +58,6 @@ def stream(chatroom_name):
                     
                     h.log_message("Relaying Message...")
                     try:
-                    
-                        
-                        #yield f"data: {message["data"].decode("utf-8")} \n\n"
                         yield f"data: {message} \n\n"
                     # catch error messages related to encoding/decoding from redis
                     except TypeError as t:
