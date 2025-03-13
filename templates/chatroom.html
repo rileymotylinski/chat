@@ -1,0 +1,18 @@
+{% extends "headers.html" %}
+
+{% block meta %}
+ <script src="{{url_for('static', filename='client.js')}}"></script>  
+ <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+ <meta name="chatroom-name" content={{ room }}>
+{% endblock %}
+{% block content %} 
+<a href="/"><button>Go Home</button></a>
+<div><textarea id="username"></textarea></div>
+<textarea id="message"></textarea>
+<button id="message-send">send a message</button>
+
+<h3>Message Area</h3>
+<div id="message-area"></div>
+
+
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends "headers.html" %}
+
+{% block meta %}
+<script src="{{url_for('static', filename='index.js')}}"></script>
+
+{% endblock %}
+
+{% block content %}
+
+
+<div>
+    chatroom
+
+    <button id="submit">Create Chat room</button>
+    <textarea id="chatroom-name"></textarea>
+    <div id="buttons">
+        {% for room in rooms %}
+            <button id={{ room }} onclick="redirect('{{ room }}')">{{ room }}</button>
+            
+            
+        {% endfor %}
+
+        
+
+    </div>
+</div>
+{% endblock %}
