@@ -2,10 +2,12 @@ window.addEventListener("DOMContentLoaded", () => {
    
     chatroom = document.head.querySelector("meta[name='chatroom-name']").content;
     document.querySelector("#message-send").addEventListener("click", () => {
+            console.log("sending message");
             message = $("#message").val();
             user = $("#username").val();
             console.log(message)
             // formatting outgoing message
+            // remmeber to change this when you change port
             fetch("http://127.0.0.1:4999/chatroom/message", {
                 method: "POST",
                 body: JSON.stringify({
@@ -30,17 +32,20 @@ window.addEventListener("DOMContentLoaded", () => {
     const sse = new EventSource("/stream/" + chatroom)
 
     function handleStream(data){
+        console.log("Received message")
         const div = document.querySelector("#message-area");
         const paragraph = document.createElement("p");
     
-        data = JSON.parse(data)
+        data = JSON.parse(data.replaceAll("\'","\""))
 
-        console.log(data)
+        //console.log(data.replaceAll("\'","\""))
+        console.log(typeof(data))
         
         
         // TODO: single quotes don't work right now :(. Something with escape characters on server side maybe?
         // inserting into current page
         paragraph.innerText = data["user"] + ": " + data["message"];
+        //paragraph.innerText = data["user"] + ": " + data;
         div.appendChild(paragraph);
     }
 

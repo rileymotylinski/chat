@@ -1,3 +1,5 @@
+// landing page js
+
 function redirect(chatroom) {
     window.location.href = "/chatroom/" + chatroom
 }

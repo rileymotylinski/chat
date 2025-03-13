@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, Response
 from flask_sse import sse
-import logging
 import redis
 import json
 import helper as h
@@ -9,7 +8,7 @@ import helper as h
 r = redis.Redis()
 app = Flask(__name__)
 # suppressing flask log messages
-logging.getLogger('werkzeug').setLevel(logging.ERROR)
+#logging.getLogger('werkzeug').setLevel(logging.ERROR)
 
 # TODO: cleanup function for empty rooms
 # r.pubsub_channels()?
@@ -51,20 +50,22 @@ def stream(chatroom_name):
         while True:
             # has to yield in a certain format to work
             for message in p.listen():
+           
                 if message["type"] != "subscribe":
-                    h.log_message("Message Heard: " + str(json.loads(message["data"].decode("utf-8"))["message"]))
-                    
+                    h.log_message("Message Heard: " + str(message))
+         
                     message = message["data"].decode("utf-8")
                     
                     h.log_message("Relaying Message...")
                     try:
+                    
                         
-                      
-                        yield f"data: {message["data"].decode("utf-8")} \n\n"
+                        #yield f"data: {message["data"].decode("utf-8")} \n\n"
+                        yield f"data: {message} \n\n"
                     # catch error messages related to encoding/decoding from redis
                     except TypeError as t:
                         h.log_message("Error sending message: " + str(t))
-                        decoded_message = message["data"].decode("utf-8")
+                        decoded_message = message
                         h.log_message("∟> Decoded Bytes Message to utf-8")
                         
                     
