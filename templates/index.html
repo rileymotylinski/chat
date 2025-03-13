@@ -12,7 +12,7 @@
     chatroom
 
     <button id="submit">Create Chat room</button>
-    <textarea id="chatroom-name"></textarea>
+    <textarea id="chatroom-name" placeholder="enter chatroom name"></textarea>
     <div id="buttons">
         {% for room in rooms %}
             <button id={{ room }} onclick="redirect('{{ room }}')">{{ room }}</button>

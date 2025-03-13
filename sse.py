@@ -48,7 +48,7 @@ def stream(chatroom_name):
     
     def get_data():
         while True:
-            # has to yield in a certain format to work
+            
             for message in p.listen():
            
                 if message["type"] != "subscribe":
@@ -58,8 +58,10 @@ def stream(chatroom_name):
                     
                     h.log_message("Relaying Message...")
                     try:
+                        # has to yield in a certain format to work
                         yield f"data: {message} \n\n"
                     # catch error messages related to encoding/decoding from redis
+                    # add what's necessary in future should we need to handle errors like this
                     except TypeError as t:
                         h.log_message("Error sending message: " + str(t))
                         decoded_message = message
