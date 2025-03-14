@@ -7,7 +7,7 @@ window.addEventListener("DOMContentLoaded", () => {
             user = $("#username").val();
             console.log(message)
             // formatting outgoing message
-            // remmeber to change this when you change port
+            // rememeber to change this when you change port
             fetch("http://127.0.0.1:4999/chatroom/message", {
                 method: "POST",
                 body: JSON.stringify({
@@ -32,10 +32,10 @@ window.addEventListener("DOMContentLoaded", () => {
     const sse = new EventSource("/stream/" + chatroom)
 
     function handleStream(data){
-        console.log("Received message")
+        //console.log("Received message")
         const div = document.querySelector("#message-area");
         const paragraph = document.createElement("p");
-    
+        // incoming data is a string that needs to be parsed as dict. JSON needs double quotes instead of single quotes
         data = JSON.parse(data.replaceAll("\'","\""))
 
         //console.log(data.replaceAll("\'","\""))
